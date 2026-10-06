@@ -1,0 +1,3 @@
+RESULT: 
+Thus the concept of decision  trees with suitable data set from real world problem and to 
+classify the data set to produce new sample was implemented successfully.

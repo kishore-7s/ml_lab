@@ -1,0 +1,3 @@
+RESULT: 
+Thus the Classification of Iris dataset using K-nearest Neighbour algorithm was implemented 
+successfully.

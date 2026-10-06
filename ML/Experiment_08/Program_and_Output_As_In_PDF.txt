@@ -1,0 +1,124 @@
+PROGRAM: 
+Import the required libraries 
+import pandas as pd 
+import numpy as np 
+import matplotlib.pyplot as plt 
+import seaborn as sns 
+ 
+Load the heart dataset 
+from google.colab 
+import filesupload = files.upload() 
+Output: 
+ 
+Explore the dataset 
+df=pd.read_csv('heart.csv')df.head() 
+Output: 
+ 
+df.shape 
+ 
+Output: 
+df.isnull().sum() 
+
+
+IFETCE R-2023 ACADEMIC YEAR: 2025-2026 
+ 
+IFET COLLEGE OF ENGINEERING | Department of Computer Science and Engineering 43 
+ 
+ 
+ 
+Output: 
+ 
+ 
+df.drop(['oldpeak','slope','ca','thal'],axis=1,inplace=True) 
+df.head() 
+Output: 
+ 
+df.info() 
+Output: 
+ 
+df.describe() 
+Output: 
+
+
+IFETCE R-2023 ACADEMIC YEAR: 2025-2026 
+ 
+IFET COLLEGE OF ENGINEERING | Department of Computer Science and Engineering 44 
+ 
+ 
+ 
+!pip install pgmpy 
+Build the Model 
+from pgmpy.models import BayesianModel 
+from pgmpy.estimators import MaximumLikelihoodEstimator,BayesianEstimator 
+Output: 
+ 
+df.columns 
+Output: 
+ 
+ 
+ 
+model=BayesianModel([('age','target'),('sex','target'),('exang','target'),('cp','target'),('target','restecg 
+'),('target','chol')]) 
+model.fit(df,estimator=MaximumLikelihoodEstimator) 
+print(model.get_cpds('age')) 
+Output: 
+ 
+/usr/local/lib/python3.7/dist-packages/pgmpy/models/BayesianModel.py:10: 
+FutureWarning:BayesianModel has been renamed to BayesianNetwork. Please use 
+BayesianNetwork class, BayesianModel will be removed in future. 
+FutureWarning, 
+
+
+IFETCE R-2023 ACADEMIC YEAR: 2025-2026 
+ 
+IFET COLLEGE OF ENGINEERING | Department of Computer Science and Engineering 45 
+ 
+ 
+ 
+ 
+print(model.get_cpds('sex')) 
+Output: 
+ 
+ 
+ 
+print(model.get_cpds('exang')) 
+Output: 
+ 
+ 
+print(model.get_cpds('chol')) 
+Output: 
++ + + -+ 
+| target | target(0) | target(1) | 
++ + + -+ 
+| chol(126) | 0.0 | 0.006060606060606061 | 
++ + + -+ 
+| chol(131) | 0.007246376811594203 | 0.0 | 
++ + + -+ 
+| chol(141) | 0.0 | 0.006060606060606061 | 
++ + + -+ 
+| chol(149) | 0.007246376811594203 | 0.006060606060606061 | 
++ + + -+ 
+| chol(157) | 0.0 | 0.006060606060606061 | 
++ + + -+ 
+| chol(160) | 0.0 | 0.006060606060606061 | 
++ + + -+ 
+| chol(164) | 0.007246376811594203 | 0.0 | 
++ + + -+ 
+| chol(166) | 0.007246376811594203 | 0.0 | 
++ + + -+ 
+| chol(167) | 0.007246376811594203 | 0.0 | 
++ + + -+ 
+
+
+IFETCE R-2023 ACADEMIC YEAR: 2025-2026 
+ 
+IFET COLLEGE OF ENGINEERING | Department of Computer Science and Engineering 46 
+ 
+ 
+ 
+| chol(168) | 0.0 | 0.006060606060606061 | 
++ + + -+ 
+| chol(169) | 0.007246376811594203 | 0.0 | 
++ + + -+ 
+| chol(172) | 0.007246376811594203 | 0.0 | 
++ + + -+

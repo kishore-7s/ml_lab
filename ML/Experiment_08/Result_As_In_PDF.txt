@@ -1,0 +1,2 @@
+RESULT: 
+Thus the Construction of Bayesian network model for medical diagnosis was implementedsuccessfully.

@@ -1,0 +1,3 @@
+RESULT: 
+Thus the non-parametric Locally Weighted Regression algorithm for data-point fitting was implemented 
+successfully.

@@ -1,0 +1,2 @@
+RESULT: 
+Thus the online fraud detection using machine learning algorithm was implemented successfully.

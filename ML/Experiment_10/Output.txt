@@ -1,0 +1,24 @@
+Sample Output
+
+The following is a sample output:
+
+text                                      category
+0 The government announced new policies... politics
+1 The team won the championship match...   sports
+2 The stock market increased today...      business
+3 A new movie was released this week...    entertainment
+4 Scientists discovered a new technology... science
+
+Accuracy: 0.92
+
+Classification Report:
+
+              precision    recall  f1-score
+
+business        0.91       0.90      0.90
+entertainment   0.93       0.92      0.92
+politics        0.94       0.95      0.94
+science         0.90       0.91      0.90
+sports          0.92       0.93      0.92
+
+Predicted News Category: sports

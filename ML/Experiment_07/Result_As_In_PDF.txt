@@ -1,0 +1,3 @@
+RESULT: 
+Thus the Sentiment analysis using random forest optimization algorithm was implemented 
+successfully.

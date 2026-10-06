@@ -1,0 +1,184 @@
+PROGRAM: 
+Import the required libraries 
+import numpy as np 
+import pandas as pd 
+Load Restaurant Reviews dataset 
+ 
+from google.colab import filesupload = files.upload() 
+Output: 
+ 
+Explore the dataset 
+df=pd.read_csv('Restaurant_Reviews.tsv',delimiter='\t', quoting=3) 
+df.head() 
+Output: 
+ 
+
+
+IFETCE R-2023 ACADEMIC YEAR: 2025-2026 
+ 
+IFET COLLEGE OF ENGINEERING | Department of Computer Science and Engineering 38 
+ 
+ 
+ 
+df.shape 
+Output: 
+ 
+(1000, 2) 
+Data Preprocessing 
+import nltkimport re 
+nltk.download('stopwords') 
+from nltk.corpus import stopwords 
+from nltk.stem.porter import PorterStemmer 
+Output: 
+ 
+# Cleaning 
+the reviews 
+corpus = [] 
+for i in range(0,1000): 
+# Cleaning special character from the reviews 
+review = re.sub(pattern='[^a-zA-Z]',repl=' ', string=df['Review'][i]) 
+# Converting the entire review into 
+lower case 
+review = review.lower() 
+# Tokenizing the review by words 
+review_words = review.split() 
+# Removing the stop words 
+review_words = [word for word in review_words if not word in 
+set(stopwords.words('english'))] 
+# Stemming the words 
+ps = PorterStemmer() 
+review = [ps.stem(word) for word in review_words] 
+# Joining the stemmed words 
+review = ' '.join(review) 
+# Creating a corpus 
+corpus.append(review) corpus[0:10] 
+ 
+ 
+Output: 
+Build the Model 
+# Creating the Bag of Words model 
+from sklearn.feature_extraction.text 
+import CountVectorizercv = CountVectorizer(max_features=1500) 
+X = cv.fit_transform(corpus).toarray()y = df.iloc[:, 1].values 
+
+
+IFETCE R-2023 ACADEMIC YEAR: 2025-2026 
+ 
+IFET COLLEGE OF ENGINEERING | Department of Computer Science and Engineering 39 
+ 
+ 
+ 
+Train the Model 
+from sklearn.model_selection import train_test_split 
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size =0.20, random_state = 0) 
+from sklearn.ensemble import RandomForestClassifier 
+model = RandomForestClassifier(n_estimators=35) 
+model.fit(X_train, y_train) 
+RandomForestClassifier(n_estimators=35) 
+model.score(X_test, y_test) 
+Output: 
+ 
+Running Predictions 
+# Predicting the Test set results 
+y_pred = model.predict(X_test) # Accuracy, Precision and Recall 
+from sklearn.metrics import accuracy_score 
+from sklearn.metrics import precision_score 
+from sklearn.metrics import recall_score 
+score1 = accuracy_score(y_test,y_pred) 
+score2 = precision_score(y_test,y_pred) 
+score3= recall_score(y_test,y_pred) 
+print("---- Scores ---- ") 
+print("Accuracy score is: {}%".format(round(score1*100,2))) 
+print("Precision score is: {}".format(round(score2,2))) 
+print("Recall score is: {}".format(round(score3,2))) 
+Output: 
+ 
+# Making the Confusion Matrix 
+from sklearn.metrics import confusion_matrix 
+cm = confusion_matrix(y_test, y_pred) 
+# Plotting the confusion matrix 
+import matplotlib.pyplot as plt 
+import seaborn as sns 
+%matplotlib inline plt.figure(figsize = (5,5)) 
+sns.heatmap(cm, annot=True, cmap="YlGnBu", xticklabels=['Negative', 
+'Positive'], yticklabels=['Negative', 'Positive']) 
+plt.xlabel('Predicted values') 
+plt.ylabel('Actual values') 
+ 
+Output: 
+Text(23.999999999999996, 0.5, 'Actual values') 
+
+
+IFETCE R-2023 ACADEMIC YEAR: 2025-2026 
+ 
+IFET COLLEGE OF ENGINEERING | Department of Computer Science and Engineering 40 
+ 
+ 
+ 
+# Hyperparameter tuning the Naive 
+Bayes Classifierbest_accuracy = 0.0 
+n_estimators = 5 
+for i in np.arange(1,30,2): 
+temp_classifier = RandomForestClassifier(n_estimators=i) 
+temp_classifier.fit(X_train, y_train) temp_y_pred = 
+temp_classifier.predict(X_test) 
+score = accuracy_score(y_test, temp_y_pred) 
+print("Accuracy score for n_estimators={} is: {}%".format(round(i,1), 
+round(score*100,2)))if score>best_accuracy: 
+best_accuracy = score 
+n_estimators_val = i 
+print(' ') 
+print('The best accuracy is {}% with n_estimators value as {}'.format(round(best_accuracy*100, 
+2), round(n_estimators_val,1))) 
+ 
+Output: 
+ 
+model = RandomForestClassifier(n_estimators=n_estimators_val) 
+model.fit(X_train, y_train) 
+RandomForestClassifier(n_estimators=19) 
+ 
+def predict_sentiment(sample_review): 
+sample_review = re.sub(pattern='[^a-zA-Z]',repl=' ', string =sample_review) 
+sample_review = sample_review.lower() 
+sample_review_words = sample_review.split() 
+sample_review_words = [word for word in sample_review_words if not word in 
+set(stopwords.words('english'))] 
+ps = PorterStemmer() 
+final_review = [ps.stem(word) for word in sample_review_words]final_review = ' 
+'.join(final_review) 
+temp = cv.transform([final_review]).toarray()return model.predict(temp) 
+ 
+sample_review = 'The food is really good here.' 
+if predict_sentiment(sample_review): 
+print('This is a POSITIVE review.') 
+
+
+IFETCE R-2023 ACADEMIC YEAR: 2025-2026 
+ 
+IFET COLLEGE OF ENGINEERING | Department of Computer Science and Engineering 41 
+ 
+ 
+ 
+ 
+else: 
+print('This is a NEGATIVE review!') 
+Output: 
+ 
+ 
+# Predicting values 
+sample_review = 'Food was pretty bad and the service was 
+very slow.' 
+if predict_sentiment(sample_review): 
+print('This is a POSITIVE review.') 
+else: 
+print('This is a NEGATIVE review!') 
+ 
+Output: 
+# Predicting values 
+sample_review = 'The food was absolutely wonderful and nicely presentation' 
+if predict_sentiment(sample_review): 
+print('This is a POSITIVE review.') 
+else: 
+print('This is a NEGATIVE review!') 
+ 
+Output:
