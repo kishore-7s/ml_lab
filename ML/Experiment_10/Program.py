@@ -1,49 +1,58 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.model_selection import 
+train_test_split
+from sklearn.preprocessing import 
+LabelEncoder
+from sklearn.linear_model import 
+LogisticRegression
+from sklearn.metrics import 
+accuracy_score, 
+classification_report
 
 # Load dataset
-data = pd.read_csv("news.csv")
+pd.read_csv("predictive_maintanance.csv")
 
 # Display first few records
 print(data.head())
 
-# Text and target columns
-X = data["text"]
-y = data["category"]
+# Remove unnecessary 
+columns_data = data.drop(columns=["UDI", 
+"Product ID"])
 
-# Split dataset
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
+# Encode categorical 
+column_encoder = LabelEncoder() 
+data["Type"] = encoder.fit_transform(data["Type"])
+
+# Features and target 
+X = data.drop(columns=["Machine failure"]) 
+y = data["Machine failure"]
+
+# Split dataset 
+X_train, X_test, y_train, y_test = train_test_split( 
+    X, y, test_size=0.2, random_state=42 
 )
 
-# Convert text into TF-IDF features
-vectorizer = TfidfVectorizer(stop_words="english")
-X_train_tfidf = vectorizer.fit_transform(X_train)
-X_test_tfidf = vectorizer.transform(X_test)
+# Create Logistic Regression model 
+model = LogisticRegression(max_iter=1000)
 
-# Create Naive Bayes model
-model = MultinomialNB()
+# Train model 
+model.fit(X_train, y_train)
 
-# Train model
-model.fit(X_train_tfidf, y_train)
+# Predict machine failure 
+y_pred = model.predict(X_test)
 
-# Predict categories
-y_pred = model.predict(X_test_tfidf)
+# Calculate accuracy 
+accuracy = accuracy_score(y_test, y_pred) 
+print("\nAccuracy:", accuracy)
 
-# Calculate accuracy
-accuracy = accuracy_score(y_test, y_pred)
+# Classification report 
+print("\nClassification Report:") 
+print(classification_report(y_t est, y_pred))
 
-print("Accuracy:", accuracy)
-print("\nClassification Report:")
-print(classification_report(y_test, y_pred))
-
-# Example prediction
-news = ["The team won the championship match after an exciting game."]
-
-news_tfidf = vectorizer.transform(news)
-prediction = model.predict(news_tfidf)
-
-print("\nPredicted News Category:", prediction[0])
+# Example prediction 
+sample = X_test.iloc[[0]] 
+prediction = model.predict(sample) 
+if prediction[0] == 1:     
+    print("\nPredicted Result: Machine Failure") 
+else:     
+    print("\nPredicted Result: No Machine Failure")
